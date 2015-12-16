@@ -1,0 +1,3 @@
+include README.rst
+include hft/style.json
+include hft/jar/portfolioeffect-quant-client-1.0-allinone.jar

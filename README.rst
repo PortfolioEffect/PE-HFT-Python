@@ -2,9 +2,13 @@
   <img width="200" src="https://www.portfolioeffect.com/img/logo/portfolioeffect-logo-full-200-950.png" alt="PortfolioEffect">
 </a>
 
-# PortfolioEffectHFT Package for Python 
-Python package/API to PortfolioEffect Quant service for high frequency trading (HFT) strategy backtests, intraday portfolio 
+# PortfolioEffect HFT Package for Python 
+Python package/API to PortfolioEffect cloud service for high frequency trading (HFT) strategy backtests, intraday portfolio 
 analysis and portfolio optimization.
+
+## Package Installation
+
+	python setup.py install
 
 ## About PortfolioEffect
 

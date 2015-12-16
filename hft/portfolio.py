@@ -10,7 +10,6 @@ from util import *
 # 
 # Portfolio Methods
 #
-
 def portfolio_create(fromTime, toTime, index = 'SPY'):
     
     # TODO add user data
@@ -24,7 +23,7 @@ def portfolio_create(fromTime, toTime, index = 'SPY'):
     
     result = portfolio.setFromTime(fromTime);
     if result.hasError():
-         raise ValueError(result.getErrorMessage());
+        raise ValueError(result.getErrorMessage());
 
     result = portfolio.setToTime(toTime);
     if result.hasError():
@@ -41,13 +40,69 @@ def portfolio_symbols(portfolio):
     util_validate()
     result = portfolio.getSymbols()  
     return result
-
-# TODO add vector version
-# simple method to add positions   
-def portfolio_addPosition(portfolio, symbol, quantity):
-    result = portfolio.addPosition(symbol,quantity); 
+ 
+def portfolio_addPosition(portfolio, symbol, quantity=None, time=None, priceData=None):
+    result = None;
+    DateTimeUtil = autoclass('com.portfolioeffect.quant.client.util.DateTimeUtil');
+    
+    
+    if priceData is None:
+        if time is not None:
+            if not util_isNumeric(time):
+                time = DateTimeUtil.toPOSIXTime (time);
+            result = portfolio.addPosition(symbol,quantity, time); 
+        else:
+            result = portfolio.addPosition(symbol,quantity);
+    else:
+        if time is not None:
+            if not util_isNumeric(time):
+                time = DateTimeUtil.toPOSIXTime (time);
+            result = portfolio.addPosition(symbol,quantity, time, priceData); 
+        else:
+            result = portfolio.addPosition(symbol,quantity, priceData);
+                
     if result.hasError():
         raise ValueError(result.getErrorMessage());
+    
+    
+# portfolio_addPosition<-function(portfolio,symbol,quantity,time,priceData){
+# }
+# 
+# setMethod("portfolio_addPosition" ,c(portfolio="portfolio",symbol="character",quantity="ANY",time="missing",priceData="missing"),function(
+#                 portfolio,symbol,quantity){
+#             util_validate()
+#             result<-.jcall(portfolio@java,returnSig="Lcom/portfolioeffect/quant/client/result/MethodResult;", method="addPosition",symbol, as.integer(quantity))
+#             util_checkErrors(result)
+#         })
+# 
+# setMethod("portfolio_addPosition" ,c(portfolio="portfolio",symbol="character",quantity="ANY",time="missing",priceData="matrix"),function(
+#                 portfolio,symbol,quantity,priceData){
+#             util_validate()
+#             result<-.jcall(portfolio@java,returnSig="Lcom/portfolioeffect/quant/client/result/MethodResult;", method="addPosition",symbol, as.double(priceData[,2]), as.integer(quantity),.jlong(priceData[,1]))
+#             util_checkErrors(result)
+#         })
+# 
+# setMethod("portfolio_addPosition" ,c(portfolio="portfolio",symbol="character",quantity="ANY",time="ANY",priceData="missing"),function(
+#                 portfolio,symbol,quantity,time){
+#             util_validate()
+#             if(!is.numeric(time)){
+#                 time<-util_dateToPOSIXTime(time)
+#             }
+#             result<-.jcall(portfolio@java,returnSig="Lcom/portfolioeffect/quant/client/result/MethodResult;", method="addPosition",symbol, as.integer(quantity),.jlong(time))
+#             util_checkErrors(result)
+#         })
+# 
+# setMethod("portfolio_addPosition" ,c(portfolio="portfolio",symbol="character",quantity="ANY",time="ANY",priceData="matrix"),function(
+#                 portfolio,symbol,quantity,time,priceData){
+#             util_validate()
+#     if(!is.numeric(time)){
+#         time<-util_dateToPOSIXTime(time)
+#     }
+#             time<-util_dateToPOSIXTime(time)
+#             result<-.jcall(portfolio@java,returnSig="Lcom/portfolioeffect/quant/client/result/MethodResult;", method="addPosition",symbol, as.double(priceData[,2]),.jlong(priceData[,1]), as.integer(quantity),.jlong(time))
+#             util_checkErrors(result)
+#         })
+#     
    
 def portfolio_startBatch(portfolio):
     portfolio.startBatch()
@@ -134,7 +189,7 @@ def portfolio_omegaRatio(portfolio,thresholdReturn):
     return util_metric(portfolio, {'metric':'PORTFOLIO_OMEGA_RATIO','thresholdReturn':thresholdReturn})  
 
 def portfolio_rachevRatio(portfolio,confidenceIntervalA=0.95,confidenceIntervalB=0.95):
-     return util_metric(portfolio, {'metric':'PORTFOLIO_RACHEV_RATIO','confidenceIntervalAlpha':confidenceIntervalA,'confidenceIntervalBeta':confidenceIntervalB})  
+    return util_metric(portfolio, {'metric':'PORTFOLIO_RACHEV_RATIO','confidenceIntervalAlpha':confidenceIntervalA,'confidenceIntervalBeta':confidenceIntervalB})  
     
 def portfolio_gainVariance(portfolio):
     return util_metric(portfolio, {'metric':'PORTFOLIO_GAIN_VARIANCE'})  
@@ -308,9 +363,6 @@ def position_VaR(portfolio,symbol,confidenceInterval=0.95):
 def position_modifiedSharpeRatio(portfolio,symbol,confidenceInterval=0.95):
     return util_metric(portfolio, {'metric':'POSITION_SHARPE_RATIO_MOD','position': symbol,'confidenceInterval': confidenceInterval})  
 
-def position_starrRatio(portfolio,symbol,confidenceInterval=0.95):
-    return util_metric(portfolio, {'metric':'POSITION_STARR_RATIO','position': symbol,'confidenceInterval': confidenceInterval})  
-
 def position_sharpeRatio(portfolio,symbol):
     return util_metric(portfolio, {'metric':'POSITION_SHARPE_RATIO','position': symbol})  
 
@@ -339,7 +391,7 @@ def position_omegaRatio(portfolio,symbol,thresholdReturn):
     return util_metric(portfolio, {'metric':'POSITION_OMEGA_RATIO','position': symbol,'thresholdReturn':thresholdReturn})  
 
 def position_starrRatio(portfolio,symbol,confidenceIntervalA=0.95,confidenceIntervalB=0.95):
-    return util_metric(portfolio, {'metric':'POSITION_RACHEV_RATIO','position': symbol,'confidenceIntervalAlpha': confidenceIntervalAlpha,'confidenceIntervalBeta': confidenceIntervalBeta})  
+    return util_metric(portfolio, {'metric':'POSITION_RACHEV_RATIO','position': symbol,'confidenceIntervalAlpha': confidenceIntervalA,'confidenceIntervalBeta': confidenceIntervalB})  
 
 def position_gainVariance(portfolio,symbol):
     return util_metric(portfolio, {'metric':'POSITION_GAIN_VARIANCE','position': symbol})  

@@ -1,18 +1,18 @@
-import matplotlib.pyplot as plt
 import json
-import matplotlib
-import matplotlib.dates as mdates
-import numpy as np
-import datetime as dt
-import pytz
 import locale
+import matplotlib
+import pytz
+import pkgutil
+import datetime as dt
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import numpy as np
 
 
 def ascii_encode_dict(data):
     ascii_encode = lambda x: x.encode('ascii') if isinstance(x, unicode) else x 
     return dict(map(ascii_encode, pair) for pair in data.items()) 
-
 
 def util_plot2d(metric, title='', subtitle = '', line_size=2, title_size=17):
     etz = pytz.timezone('US/Eastern')
@@ -39,6 +39,6 @@ def util_plot2d(metric, title='', subtitle = '', line_size=2, title_size=17):
     plt.grid(True) 
     plt.show()
            
-plotStyle = ascii_encode_dict(json.load( open("style.json") ))
+plotStyle = ascii_encode_dict(json.loads(pkgutil.get_data('hft', 'style.json')))
 matplotlib.rcParams.update(plotStyle)
 locale.setlocale(locale.LC_ALL, 'C')

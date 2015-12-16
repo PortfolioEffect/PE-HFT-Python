@@ -1,9 +1,9 @@
 from __init__ import *
 
+
 # 
 # Utility Methods
 # 
-
 def util_setCredentials(username, password, apiKey, host='snowfall04.snowfallsystems.com'):
     # TODO write credentials to file
     global clientCredentials
@@ -66,3 +66,7 @@ def util_metric(portfolio, args):
     util_validate()
     data = portfolio.getMetric(json.dumps(args))
     return util_getResult(data)
+
+def util_isNumeric(vector):
+    return all(item.isdigit() for item in vector)
+
