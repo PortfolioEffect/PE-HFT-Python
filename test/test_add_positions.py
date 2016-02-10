@@ -30,7 +30,7 @@ class TestAddPositionMethods(unittest.TestCase):
         assert len(variance[0]) > 0    
         #util_plot2d(variance, "GOOG Variance", "daily")
 
-
+ 
  
 if __name__ == '__main__':
     unittest.main()

@@ -10,7 +10,7 @@ from util import *
 # 
 # Portfolio Methods
 #
-def portfolio_create(fromTime, toTime, index = 'SPY'):
+def portfolio_create(fromTime, toTime, index = 'SPY', indexData = None):
     
     # TODO add user data
     
@@ -20,6 +20,11 @@ def portfolio_create(fromTime, toTime, index = 'SPY'):
    
     Portfolio = autoclass('com.portfolioeffect.quant.client.portfolio.Portfolio')
     portfolio = Portfolio(clientConnection)
+    
+    #if indexData is not None:
+        #portfolio.addPosition(symbol,quantity, priceData);
+                
+    portfolio_defaultSettings(portfolio)
     
     result = portfolio.setFromTime(fromTime);
     if result.hasError():
@@ -36,6 +41,28 @@ def portfolio_create(fromTime, toTime, index = 'SPY'):
     return portfolio
 
 
+def portfolio_defaultSettings(portfolio):
+    portfolio_settings(portfolio,portfolioMetricsMode="portfolio",
+                windowLength = "1d",
+                holdingPeriodsOnly = False,
+                shortSalesMode = "lintner",
+                jumpsModel = "moments",
+                noiseModel = True,
+                fractalPriceModel=True,
+                factorModel = "sim",
+                densityModel="GLD",
+                driftTerm=False,
+                resultsSamplingInterval = "1s",
+                inputSamplingInterval="none",
+                timeScale="1d",
+                txnCostPerShare=0,
+                txnCostFixed=0)
+
+def portfolio_settings (portfolio, **kwargs):
+    util_validate()
+    #print (json.dumps(kwargs))
+    portfolio.setPortfolioSettings(json.dumps(kwargs))
+    
 def portfolio_symbols(portfolio):
     util_validate()
     result = portfolio.getSymbols()  

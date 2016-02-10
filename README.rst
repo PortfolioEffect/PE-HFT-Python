@@ -1,33 +1,24 @@
-PortfolioEffect HFT Package for Python
-======================================
+# portfolioeffect_hft Package for Python 
 
-Python package/API to PortfolioEffect cloud service for high frequency
-trading (HFT) strategy backtests, intraday portfolio analysis and
-portfolio optimization.
+Python API to PortfolioEffect cloud service for backtesting high frequency trading (HFT) strategies, 
+intraday portfolio analysis and optimization. Includes auto-calibrating model pipeline for market
+microstructure noise, risk factors, price jumps/outliers, tail risk (high-order moments) and price 
+fractality (long memory). Constructed portfolios could use client-side market data or access HF 
+intraday price history for all major US Equities.
 
-Package Installation
---------------------
+## Package Installation
 
-::
+	python setup.py install
 
-    python setup.py install
-
-About PortfolioEffect
----------------------
-
-PortfolioEffect platform employs high frequency microstructure model
-pipeline, cloud computing and server-side market data to enable classic
-portfolio analysis at intraday horizons.
-
-License
--------
+## License
 
 This package is released under the GPLv3 license. See the file LICENSE.
 
-Usage of this package with PortfolioEffect services shall be subject to
-the `Terms of Service <https://www.portfolioeffect.com/docs/terms>`__.
+Usage of this package with PortfolioEffect services shall be subject to the [Terms of Service][PortfolioEffect Terms].
 
-Copyright
----------
+## Copyright
 
-Copyright © 2015 PortfolioEffect
+Copyright &copy; 2015 PortfolioEffect
+
+[PortfolioEffect Terms]: https://www.portfolioeffect.com/docs/terms
+
