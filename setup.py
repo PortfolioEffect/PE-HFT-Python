@@ -29,10 +29,11 @@ setup(
 
     # The project's main homepage.
     url='https://github.com/PortfolioEffect/PortfolioEffectHFT-Python',
+    download_url = 'https://github.com/PortfolioEffect/PortfolioEffectHFT-Python/tarball/1.0.0',
 
     # Author details
-    author='Aleksey Zemnitskiy',
-    author_email='aleksey.zemnitskiy@portfolioeffect.com',
+    author='Aleksey Zemnitskiy, Stephanie Toper, Andrey Kostin',
+    author_email='aleksey.zemnitskiy@portfolioeffect.com, stephanie.toper@portfolioeffect.com, andrey.kostin@portfolioeffect.com',
 
     # Choose your license
     license='GPL',
@@ -56,10 +57,6 @@ setup(
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
     ],
 
     # What does your project relate to?
