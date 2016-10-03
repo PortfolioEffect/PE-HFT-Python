@@ -12,5 +12,5 @@ from jnius import autoclass
 # Global vars
 #
 
-clientConnection = None
+CLIENT_CONNECTION = None
 clientCredentials = None
