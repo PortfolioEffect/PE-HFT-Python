@@ -12,8 +12,7 @@ class TestSettingsMethods(unittest.TestCase):
 
         util_setCredentials(config['DEFAULT']['username'],
                             config['DEFAULT']['password'],
-                            config['DEFAULT']['apiKey'],
-                            config['DEFAULT']['host'])
+                            config['DEFAULT']['apiKey'])
         super(TestSettingsMethods, self).__init__(*args, **kwargs)
 
     def test_settings(self):
@@ -209,15 +208,6 @@ class TestSettingsMethods(unittest.TestCase):
         txn_costs1 = compute(portfolio1.txn_costs())
         txn_costs2 = compute(portfolio2.txn_costs())
         assert not txn_costs1[0][1][len(txn_costs1[0][1]) - 1] - txn_costs2[0][1][len(txn_costs2[0][1]) - 1] == 0
-
-
-#
-#       portfolio_addPosition(portfolio, 'AAPL', [100, 200], ["2015-06-12 09:55:40", "2015-06-14 09:55:40"])
-#       variance = position_variance(portfolio, 'AAPL')
-#       assert len(variance[0]) > 0
-#       plot.util_plot2d(variance, "GOOG Variance", "daily")
-
-
 
 if __name__ == '__main__':
     unittest.main()

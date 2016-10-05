@@ -14,8 +14,7 @@ class TestAllPortfolioMetric(unittest.TestCase):
 
         util_setCredentials(config['DEFAULT']['username'],
                             config['DEFAULT']['password'],
-                            config['DEFAULT']['apiKey'],
-                            config['DEFAULT']['host'])
+                            config['DEFAULT']['apiKey'])
         super(TestAllPortfolioMetric, self).__init__(*args, **kwargs)
 
     def test_portfolio_value(self):

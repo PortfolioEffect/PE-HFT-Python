@@ -15,8 +15,7 @@ class TestForecast(unittest.TestCase):
 
         util_setCredentials(config['DEFAULT']['username'],
                             config['DEFAULT']['password'],
-                            config['DEFAULT']['apiKey'],
-                            config['DEFAULT']['host'])
+                            config['DEFAULT']['apiKey'])
         super(TestForecast, self).__init__(*args, **kwargs)
 
     def test_simple_forecast(self):
@@ -125,7 +124,7 @@ class TestForecast(unittest.TestCase):
 
      assert not forecast_vector1[0][1][len(forecast_vector1[0][1]) - 1] - forecast_vector2[0][1][len(forecast_vector2[0][1]) - 1] == 0
 
-    def test_forecast_settings_valueType(self):
+    def test_forecast_settings(self):
          portfolio1 = Portfolio('2015-06-12 09:30:00', '2015-06-14 16:00:00', 'SPY')
          positionG = portfolio1.add_position('GOOG', 100)
          positionA = portfolio1.add_position('AAPL', 100)

@@ -15,8 +15,7 @@ class TestOptimization(unittest.TestCase):
 
         util_setCredentials(config['DEFAULT']['username'],
                             config['DEFAULT']['password'],
-                            config['DEFAULT']['apiKey'],
-                            config['DEFAULT']['host'])
+                            config['DEFAULT']['apiKey'])
         super(TestOptimization, self).__init__(*args, **kwargs)
 
     def test_simple_optimization(self):
@@ -61,7 +60,7 @@ class TestOptimization(unittest.TestCase):
             variance_portfolio = compute(optim_portfolio_one_constraints.variance())
             assert len(variance_portfolio[0][0]) > 0
 
-    def test_optimization_forecast(self):
+    def test_optimization_forecast_sampling_interval(self):
            portfolio = Portfolio( "2014-11-17 09:30:00", "2014-12-17 16:00:00", 'SPY')
            positionG = portfolio.add_position('GOOG', 200)
            positionA = portfolio.add_position('AAPL', 100)

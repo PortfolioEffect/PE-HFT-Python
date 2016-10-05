@@ -14,8 +14,7 @@ class TestAllPositionMetric(unittest.TestCase):
 
         util_setCredentials(config['DEFAULT']['username'],
                             config['DEFAULT']['password'],
-                            config['DEFAULT']['apiKey'],
-                            config['DEFAULT']['host'])
+                            config['DEFAULT']['apiKey'])
         super(TestAllPositionMetric, self).__init__(*args, **kwargs)
 
     def test_position_value(self):
