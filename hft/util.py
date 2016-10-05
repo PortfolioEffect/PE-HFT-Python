@@ -6,7 +6,7 @@ from __init__ import *
 #
 
 
-def util_setCredentials(username, password, apiKey, host='snowfall04.snowfallsystems.com'):
+def util_setCredentials(username, password, apiKey, host='quant07.portfolioeffect.com'):
     # TODO write credentials to file
     global CLIENT_CONNECTION
     CLIENT_CONNECTION = {'username': username, 'password': password, 'apiKey': apiKey, 'host': host }
