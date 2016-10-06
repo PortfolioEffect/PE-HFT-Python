@@ -1,3 +1,6 @@
 include README.md
+include LICENSE.txt
+include test/credentials.ini
+include test/__init__.py
 include hft/style.json
 include hft/jar/portfolioeffect-quant-client-1.0-allinone.jar
