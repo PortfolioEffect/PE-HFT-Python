@@ -15,21 +15,21 @@ here = path.abspath(path.dirname(__file__))
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
-
+    version_='1.0.3'
 setup(
     name='hft',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.2',
+    version=version_,
 
     description='High Frequency Portfolio Analytics by PortfolioEffect',
     long_description=long_description,
 
     # The project's main homepage.
     url='https://github.com/PortfolioEffect/PortfolioEffectHFT-Python',
-    download_url = 'https://github.com/PortfolioEffect/PortfolioEffectHFT-Python/tarball/1.0.2',
+    download_url = 'https://github.com/PortfolioEffect/PortfolioEffectHFT-Python/tarball/'+version_,
 
     # Author details
     author='Aleksey Zemnitskiy, Stephanie Toper, Andrey Kostin',
