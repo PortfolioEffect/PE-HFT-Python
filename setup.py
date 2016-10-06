@@ -22,14 +22,14 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.1',
+    version='1.0.2',
 
     description='High Frequency Portfolio Analytics by PortfolioEffect',
     long_description=long_description,
 
     # The project's main homepage.
     url='https://github.com/PortfolioEffect/PortfolioEffectHFT-Python',
-    download_url = 'https://github.com/PortfolioEffect/PortfolioEffectHFT-Python/tarball/1.0.0',
+    download_url = 'https://github.com/PortfolioEffect/PortfolioEffectHFT-Python/tarball/1.0.2',
 
     # Author details
     author='Aleksey Zemnitskiy, Stephanie Toper, Andrey Kostin',
