@@ -41,7 +41,7 @@ class Portfolio:
              portfolio_java = portfolio_autoclass(CLIENT_CONNECTION, fromTime, toTime, index)
 
          else:
-            if not isinstance(indexData, list):
+            if not isinstance(indexData, (list, np.ndarray)):
                 sys.exit("indexData should have class 'list'")
             time_datatime = util_timezone(indexData[0])
             fromTime = time_datatime[0].strftime("%Y-%m-%d %H:%M:%S")
@@ -75,33 +75,33 @@ class Portfolio:
         return
     
     def __repr__(self):
-        print self
+        print(self)
         return ''
     
     def __str__(self):
         util_validate()
         portfolio = self.copy()
         setting=portfolio.settings()
-        print "PORTFOLIO SETTINGS"
-        print ''
-        print 'Portfolio metrics mode '+setting['portfolioMetricsMode']
-        print 'Window length  '+setting['windowLength']
-        print 'Time scale  '+setting['timeScale']
-        print 'Holding periods only  '+setting['holdingPeriodsOnly']
-        print 'Short sales mode '+setting['shortSalesMode']
-        print 'Price jumps model  '+setting['jumpsModel']
-        print 'Microstructure noise model  '+setting['noiseModel']
-        print 'Fractal price model  '+setting['fractalPriceModel']
-        print 'Portfolio factor model  '+setting['factorModel']
-        print 'Density model  '+setting['densityModel']
-        print 'Drift term enabled  '+setting['driftTerm']
-        print 'Results NA filter  '+setting['resultsNAFilter']
-        print 'Results sampling interval  '+setting['resultsSamplingInterval']
-        print 'Input sampling interval  '+setting['inputSamplingInterval']
-        print 'Transaction cost per share  '+setting['txnCostPerShare']
-        print 'Transaction cost fixed  '+setting['txnCostFixed']
-        print ''
-        print ''
+        print("PORTFOLIO SETTINGS")
+        print('')
+        print('Portfolio metrics mode '+setting['portfolioMetricsMode'])
+        print('Window length  '+setting['windowLength'])
+        print('Time scale  '+setting['timeScale'])
+        print('Holding periods only  '+setting['holdingPeriodsOnly'])
+        print('Short sales mode '+setting['shortSalesMode'])
+        print('Price jumps model  '+setting['jumpsModel'])
+        print('Microstructure noise model  '+setting['noiseModel'])
+        print('Fractal price model  '+setting['fractalPriceModel'])
+        print('Portfolio factor model  '+setting['factorModel'])
+        print('Density model  '+setting['densityModel'])
+        print('Drift term enabled  '+setting['driftTerm'])
+        print('Results NA filter  '+setting['resultsNAFilter'])
+        print('Results sampling interval  '+setting['resultsSamplingInterval'])
+        print('Input sampling interval  '+setting['inputSamplingInterval'])
+        print('Transaction cost per share  '+setting['txnCostPerShare'])
+        print('Transaction cost fixed  '+setting['txnCostFixed'])
+        print('')
+        print('')
 
         portfolio.java.setPortfolioSettings(json.dumps({'resultsSamplingInterval':"last"}))
         portfolio.java.setPortfolioSettings(json.dumps({'resultsNAFilter':"false"}))
@@ -130,12 +130,12 @@ class Portfolio:
         temp.append(str(round(temp_portfolio[2][1][0], 3)))
         printMatrix2.append(temp)
 
-        print "POSITION SUMMARY"
+        print("POSITION SUMMARY")
         util_print_table(printMatrix1)
-        print ''
-        print ''
-        print "PORTFOLIO SUMMARY"
-        print ''
+        print('')
+        print('')
+        print("PORTFOLIO SUMMARY")
+        print('')
         util_print_table(printMatrix2)
         return ''
     
@@ -144,11 +144,43 @@ class Portfolio:
         portf = Portfolio(fromTime=portfolio_autoclass(self.java))
         return portf
     
-    def plot(self,bw=False):
+    def plot(self,**kwargs):
         util_validate()
+        plot_keys = kwargs.keys()
+
+        if 'title' in plot_keys:
+            title = kwargs['title']
+        else:
+            title = ""
+
+        if 'subtitle' in plot_keys:
+            subtitle = kwargs['subtitle']
+        else:
+            subtitle = ""
+
+        if 'line_size' in plot_keys:
+            line_size = kwargs['line_size']
+        else:
+            line_size = 2
+
+        if 'title_size' in plot_keys:
+            title_size = kwargs['title_size']
+        else:
+            title_size = 17
+
+        if 'date_formatter' in plot_keys:
+            date_formatter = kwargs['date_formatter']
+        else:
+            date_formatter = '%b-%d %H-%M'
+
+        if 'plot_size' in plot_keys:
+            plot_size = kwargs['title_size']
+        else:
+            plot_size = (6, 6)
+
         def format_date(x, pos=None):
             thisind = np.clip(int(x + 0.5), 0, N - 1)
-            return times[thisind].strftime('%b-%d %H-%M')
+            return times[thisind].strftime(date_formatter)
         portfolioTemp = self.copy()
         ax1=plt.subplot2grid((4,2), (0,0), colspan=2)
         ax4=plt.subplot2grid((4,2), (1,0))
@@ -161,7 +193,7 @@ class Portfolio:
         times = util_timezone(temp[0][0])
         N = len(temp[0][1])
         ind = np.arange(N)  # the evenly spaced plot indices
-        ax1.plot(ind, temp[0][1], lw=2)
+        ax1.plot(ind, temp[0][1], lw=line_size)
         ax1.xaxis.set_major_formatter(ticker.FuncFormatter(format_date))
         ax1.set_title('Portfolio value ($)', y=0.99, fontsize=17)
         ax1.grid(True)
@@ -169,7 +201,7 @@ class Portfolio:
         times = util_timezone(temp[1][0])
         N = len(temp[1][1])
         ind = np.arange(N)  # the evenly spaced plot indices
-        ax2.plot(ind, temp[1][1], lw=2)
+        ax2.plot(ind, temp[1][1], lw=line_size)
         ax2.xaxis.set_major_formatter(ticker.FuncFormatter(format_date))
         ax2.set_title("Portfolio Expected Return", y=0.99, fontsize=17)
         ax2.grid(True)
@@ -177,7 +209,7 @@ class Portfolio:
         times = util_timezone(temp[2][0])
         N = len(temp[2][1])
         ind = np.arange(N)  # the evenly spaced plot indices
-        ax3.plot(ind, temp[2][1], lw=2)
+        ax3.plot(ind, temp[2][1], lw=line_size)
         ax3.xaxis.set_major_formatter(ticker.FuncFormatter(format_date))
         ax3.set_title("Portfolio Variance", y=0.99, fontsize=17)
         ax3.grid(True)
@@ -205,7 +237,10 @@ class Portfolio:
         ax5.set_title("Position Profit ($)", y=0.99, fontsize=17)
         ax5.grid(True)
 
+      #  plt.suptitle(title, y=0.99, fontsize=title_size)
+      #  plt.title(subtitle, fontsize=title_size - 5)
         plt.tight_layout()
+        plt.rcParams['figure.figsize'] = plot_size
         plt.show()
 
     
@@ -686,7 +721,7 @@ class Portfolio:
             sys.exit("symbol should have class 'str'")
         positions = self.java.getPositions()
         symbols = self.java.getSymbols()
-        num = range(len(positions))[symbol == symbols]
+        num = symbols.index(symbol)
         position = Position(positions[num], symbol, self)
         return position
 

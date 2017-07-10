@@ -1,24 +1,60 @@
 from __init__ import *
-
+import sys
+from os import path, environ
+import numpy as np
 
 # 
 # Utility Methods
 #
 
 
-def util_setCredentials(username, password, apiKey, host='quant07.portfolioeffect.com'):
-    # TODO write credentials to file
+def util_setCredentials(username, password, apiKey, host='quant02.portfolioeffect.com'):
+    # write credentials to file
     global CLIENT_CONNECTION
     CLIENT_CONNECTION = {'username': username, 'password': password, 'apiKey': apiKey, 'host': host }
+    APPNAME = "ice9"
+    if sys.platform == 'darwin':
+        from AppKit import NSSearchPathForDirectoriesInDomains
+        # http://developer.apple.com/DOCUMENTATION/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Functions/Reference/reference.html#//apple_ref/c/func/NSSearchPathForDirectoriesInDomains
+        # NSApplicationSupportDirectory = 14
+        # NSUserDomainMask = 1
+        # True for expanding the tilde into a fully qualified path
+        appdata = path.join(NSSearchPathForDirectoriesInDomains(14, 1, True)[0], APPNAME,'login.npy')
+    elif sys.platform == 'win32':
+        appdata = path.join(environ['APPDATA'], APPNAME,'login.npy')
+    else:
+        appdata = path.expanduser(path.join("~", "." + APPNAME,'login.npy'))
+    np.save(appdata, CLIENT_CONNECTION)
 
 
 def util_validateConnection():
     # create client connection
     global CLIENT_CONNECTION
     if CLIENT_CONNECTION is None:
-        raise ValueError("""Function util_setCredentials() should be called before. \n
-        To retrieve your account credentials, log in to your account or register for a free account at  \n
-        https://www.portfolioeffect.com/registration""");
+        APPNAME = "ice9"
+        if sys.platform == 'darwin':
+            from AppKit import NSSearchPathForDirectoriesInDomains
+            # http://developer.apple.com/DOCUMENTATION/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Functions/Reference/reference.html#//apple_ref/c/func/NSSearchPathForDirectoriesInDomains
+            # NSApplicationSupportDirectory = 14
+            # NSUserDomainMask = 1
+            # True for expanding the tilde into a fully qualified path
+            appdata = path.join(NSSearchPathForDirectoriesInDomains(14, 1, True)[0], APPNAME, 'login.npy')
+        elif sys.platform == 'win32':
+            appdata = path.join(environ['APPDATA'], APPNAME, 'login.npy')
+        else:
+            appdata = path.expanduser(path.join("~", "." + APPNAME, 'login.npy'))
+        if path.exists(appdata):
+            login = np.load(appdata).item()
+            if not login:
+                raise ValueError("""Function util_setCredentials() should be called before. \n
+                To retrieve your account credentials, log in to your account or register for a free account at  \n
+                https://www.portfolioeffect.com/registration""");
+            else:
+                CLIENT_CONNECTION = login
+        else:
+            raise ValueError("""Function util_setCredentials() should be called before. \n
+                To retrieve your account credentials, log in to your account or register for a free account at  \n
+                https://www.portfolioeffect.com/registration""");
 
     ClientConnection = autoclass('com.portfolioeffect.quant.client.ClientConnection')
     client_connection = ClientConnection()
@@ -91,27 +127,13 @@ def util_getResult( data,metricClass=False ):
     return result
 
 def util_validate():
-    global CLIENT_CONNECTION
-    if CLIENT_CONNECTION is None:
-        raise ValueError("""Function util_setCredentials() should be called before. \n
-        To retrieve your account credentials, log in to your account or register for a free account at  \n
-        https://www.portfolioeffect.com/registration""");
-
-    ClientConnection = autoclass('com.portfolioeffect.quant.client.ClientConnection')
-    client_connection = ClientConnection()
-
-    # set credentials
-    client_connection.setUsername(CLIENT_CONNECTION.get('username'));
-    client_connection.setPassword(CLIENT_CONNECTION.get('password'));
-    client_connection.setApiKey(CLIENT_CONNECTION.get('apiKey'));
-    client_connection.setHost(CLIENT_CONNECTION.get('host'));
-    return None
+    util_validateConnection()
 
 def util_checkErrors(data):
     #TODO finish implementation
     if (data.hasError()):
       message=data.getErrorMessage()
-      print message
+      print(message)
 
 
     return

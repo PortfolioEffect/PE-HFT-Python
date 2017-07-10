@@ -114,16 +114,22 @@ class Optimizer:
                 "Cumulant4": self.java.setCumulant4ForecastBuilder(forecast.java)}[metricType]
         else:
             if forecast.__class__.__name__ == 'Metric':
-                symbol = forecast.java.getSymbol()
+                if forecast.java.__class__.__name__ == Metric([ range(10),range(10)] , "SPY").java.__class__.__name__:
+                    symbol = forecast.java.getDescription()
+                else:
+                    symbol = forecast.java.getSymbol()
+
                 data = compute(forecast)[0]
                 forecastedValues = autoclass("com.portfolioeffect.quant.client.portfolio.optimizer.ForecastedValues")
                 forecastedValues = forecastedValues(self.portfolio)
-                result = {
-                    "ExpReturn": forecastedValues.setSymbolForecastedExpReturn(symbol, data[1], data[0]),
-                    "Beta": forecastedValues.setSymbolForecastedBeta(symbol, data[1], data[0]),
-                    "Variance": forecastedValues.setSymbolForecastedVariance(symbol, data[1], data[0]),
-                    "Cumulant3": forecastedValues.setSymbolForecastedCumulant3(symbol, data[1], data[0]),
-                    "Cumulant4": forecastedValues.setSymbolForecastedCumulant4(symbol, data[1], data[0])}[metricType]
+
+                result={
+                    "ExpReturn":  forecastedValues.setSymbolForecastedExpReturn(symbol, util_to_TArrayList(data[1], 'Double'), util_POSIXTime_to_TLongArrayList(data[0])),
+#                    "Beta":  forecastedValues.setSymbolForecastedBeta(symbol, util_to_TArrayList(data[1], 'Double'), util_POSIXTime_to_TLongArrayList(data[0])),
+                    "Variance": forecastedValues.setSymbolForecastedVariance(symbol, util_to_TArrayList(data[1], 'Double'), util_POSIXTime_to_TLongArrayList(data[0])),
+                    "Cumulant3":  forecastedValues.setSymbolForecastedCumulant3(symbol, util_to_TArrayList(data[1], 'Double'), util_POSIXTime_to_TLongArrayList(data[0])),
+                    "Cumulant4":  forecastedValues.setSymbolForecastedCumulant4(symbol, util_to_TArrayList(data[1], 'Double'), util_POSIXTime_to_TLongArrayList(data[0]))}[metricType]
+#                result=forecastedValues.setSymbolForecastedExpReturn(symbol, util_to_TArrayList(data[1], 'Double'), util_POSIXTime_to_TLongArrayList(data[0]))
                 util_checkErrors(result)
                 self.java.setForecastedValue(forecastedValues)
         return self

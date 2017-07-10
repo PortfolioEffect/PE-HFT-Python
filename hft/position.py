@@ -22,7 +22,7 @@ class Position:
         self.portfolio = portfolio
     
     def __repr__(self):
-        print self
+        print(self)
         return ''
     
     def __str__(self):
@@ -44,8 +44,8 @@ class Position:
         temp.append(str(round(temp_position[5][1][0],3)))
         printMatrix1.append(temp)
 
-        print "POSITION SUMMARY"
-        print ''
+        print("POSITION SUMMARY")
+        print('')
         util_print_table(printMatrix1)
         return ''
 
@@ -411,7 +411,7 @@ class Position:
         return util_metric(self, {'metric': 'EXPECTED_UPSIDE_THRESHOLD_RETURN', 'thresholdReturn': thresholdReturn})
     
     def hurst_exponent(self):
-        """Creates position Hurst exponent as a weighted sum of the Hurst exponents of its position returns.
+        """Creates position Hurst exponent.
 
         Arguments:
           None
@@ -421,7 +421,7 @@ class Position:
         return util_metric(self, {'metric': 'HURST_EXPONENT'})
     
     def fractal_dimension(self):
-        """Creates position fractal dimension as a weighted sum of fractal dimensions of its position returns.
+        """Creates position fractal dimension.
 
         Arguments:
           None
