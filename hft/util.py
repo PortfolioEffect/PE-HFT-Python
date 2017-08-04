@@ -8,10 +8,10 @@ import numpy as np
 #
 
 
-def util_setCredentials(username, password, apiKey, host='quant02.portfolioeffect.com'):
+def util_setCredentials(username, password, apiKey, host='quant07.portfolioeffect.com', port=443):
     # write credentials to file
     global CLIENT_CONNECTION
-    CLIENT_CONNECTION = {'username': username, 'password': password, 'apiKey': apiKey, 'host': host }
+    CLIENT_CONNECTION = {'username': username, 'password': password, 'apiKey': apiKey, 'host': host, 'port': port  }
     APPNAME = "ice9"
     if sys.platform == 'darwin':
         from AppKit import NSSearchPathForDirectoriesInDomains
@@ -64,6 +64,7 @@ def util_validateConnection():
     client_connection.setPassword(CLIENT_CONNECTION.get('password'));
     client_connection.setApiKey(CLIENT_CONNECTION.get('apiKey'));
     client_connection.setHost(CLIENT_CONNECTION.get('host'));
+    client_connection.setPort(CLIENT_CONNECTION.get('port'));
     
     return client_connection
 
